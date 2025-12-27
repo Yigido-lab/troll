@@ -2,38 +2,59 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Yükleniyor...</title>
+<title>Instagram</title>
 <style>
 body{
-  background:black;color:white;
-  font-family:Arial;text-align:center;
-  margin-top:20%;
+  background:#fafafa;
+  font-family:Arial;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
 }
-#bar{
-  width:80%;height:30px;
-  border:2px solid white;
-  margin:20px auto;
+.box{
+  background:white;
+  border:1px solid #dbdbdb;
+  padding:40px;
+  width:300px;
+  text-align:center;
 }
-#fill{
-  height:100%;width:0%;
-  background:red;
+input{
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  background:#fafafa;
+  border:1px solid #dbdbdb;
 }
-#text{font-size:20px}
-#count{font-size:80px;display:none}
-#scare{display:none}
+button{
+  width:100%;
+  background:#0095f6;
+  color:white;
+  border:none;
+  padding:10px;
+  margin-top:10px;
+  font-weight:bold;
+}
+#scare{
+  display:none;
+}
 img{
   width:100vw;height:100vh;
-  position:fixed;top:0;left:0
+  position:fixed;top:0;left:0;
 }
 </style>
 </head>
 <body>
 
-<h1>Gerçek sigma bekler.</h1>
-<p id="text">Sakın sayfayı kapatma.</p>
-
-<div id="bar"><div id="fill"></div></div>
-<div id="count">3</div>
+<div class="box" id="login">
+  <h1 style="font-family:cursive">Instagram</h1>
+  <input type="text" placeholder="Telefon, kullanıcı adı veya e-posta">
+  <input type="password" placeholder="Şifre">
+  <button onclick="fakeLogin()">Giriş Yap</button>
+  <p style="color:gray;font-size:12px;margin-top:15px">
+    © Meta
+  </p>
+</div>
 
 <audio id="sound">
   <source src="https://www.myinstants.com/media/sounds/jumpscare.mp3">
@@ -44,47 +65,29 @@ img{
 </div>
 
 <script>
-let load=0;
-let bar=setInterval(()=>{
-  load++;
-  document.getElementById("fill").style.width=load+"%";
-  if(load>=99){
-    clearInterval(bar);
-    startCount();
-  }
-},50);
+function fakeLogin(){
+  document.getElementById("login").innerHTML =
+    "<p>Giriş yapılıyor...</p>";
 
-function startCount(){
-  document.getElementById("bar").style.display="none";
-  document.getElementById("text").innerText="Hazırlan...";
-  const count=document.getElementById("count");
-  count.style.display="block";
+  setTimeout(()=>{
+    // Tam ekran
+    if(document.documentElement.requestFullscreen){
+      document.documentElement.requestFullscreen();
+    }
 
-  let n=3;
-  let timer=setInterval(()=>{
-    count.innerText=n;
-    n--;
-    if(n<0){
-      clearInterval(timer);
-      jumpscare();
+    document.body.innerHTML =
+      document.getElementById("scare").innerHTML;
+
+    // SES
+    const audio=document.getElementById("sound");
+    audio.volume=1.0;
+    audio.play();
+
+    // TİTREŞİM
+    if(navigator.vibrate){
+      navigator.vibrate([500,200,500,200,1000]);
     }
   },1000);
-}
-
-function jumpscare(){
-  if(document.documentElement.requestFullscreen){
-    document.documentElement.requestFullscreen();
-  }
-
-  document.body.innerHTML=document.getElementById("scare").innerHTML;
-
-  const audio=document.getElementById("sound");
-  audio.volume=1.0;
-  audio.play();
-
-  if(navigator.vibrate){
-    navigator.vibrate([600,200,600,200,1200]);
-  }
 }
 </script>
 
